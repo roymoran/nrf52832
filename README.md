@@ -33,7 +33,7 @@ Path to J-LINK GDB Server
 e.g. `/Applications/SEGGER/JLink_V720a/JLinkGDBServerCLExe`
 
 ### Configure Makefile.posix or Makefile.windows
-Depending on OS used to build/develop you must modify either Makefile.posix (Linux/macOS) or Makefile.windows.
+Depending your OS, you must modify either Makefile.posix (Linux/macOS) or Makefile.windows found in the SDK directory (`${nRF5_SDK17}/components/toolchain/gcc/`).
 
 Contents of my Makefile.posix on my macOS.
 ```makefile
