@@ -1,0 +1,36 @@
+{
+    "env": {
+        "GNU_GCC": "/Applications/ARM",
+        "nRF5_SDK17": "/Users/roymoran/nordicsemi/sdk/nRF5_SDK_17.0.2_d674dde"
+    },
+    "configurations": [
+        {
+            "name": "ARMGCC",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${env:GNU_GCC}/arm-none-eabi/include",
+                "${env:nRF5_SDK17}/**",
+                "./src/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "NRF52",
+                "NRF52832_XXAA",
+                "BOARD_PCA10040",
+                "CONFIG_GPIO_AS_PINRESET",
+                "INITIALIZE_USER_SECTIONS",
+                "FLOAT_ABI_HARD"
+            ],
+            "macFrameworkPath": [
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+            ],
+            "compilerPath": "${env:GNU_GCC}/bin/arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "macos-clang-x64"
+        }
+    ],
+    "version": 4
+}

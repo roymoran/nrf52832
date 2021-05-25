@@ -1,0 +1,31 @@
+stages:
+  - build
+
+variables:
+  # path to SDK (used by Makefile)
+  nRF5_SDK17: $CI_PROJECT_DIR/build/nRF5_SDK_17.0.2_d674dde
+
+before_script:
+  # install dependencies, mainly cli tools, nRF5 SDK, and GNU ARM Tools
+  - apt-get update
+  - apt-get install -y make wget unzip
+  - cd build
+  - wget https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v17.x.x/nRF5_SDK_17.0.2_d674dde.zip -O nRF5_SDK_17.0.2_d674dde.zip
+  - unzip nRF5_SDK_17.0.2_d674dde.zip
+  - wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -O gcc-arm-none-eabi-10-2020-q4-major.tar.bz2
+  - tar -xf gcc-arm-none-eabi-10-2020-q4-major.tar.bz2
+  # exgtract arm gcc version to write into Makefile.posix
+  - GCC_ARM_NONE_EABI_VERSION=$(echo $($CI_PROJECT_DIR/build/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc --version) | perl -pe '($_)=/([0-9]+([.][0-9]+)+)/')
+  # set contents of Makefile.posix with path/info to gcc-arm-none-eabi download
+  - echo "GNU_INSTALL_ROOT ?= $CI_PROJECT_DIR/build/gcc-arm-none-eabi-10-2020-q4-major/bin/" > $nRF5_SDK17/components/toolchain/gcc/Makefile.posix
+  - echo "GNU_VERSION ?= $GCC_ARM_NONE_EABI_VERSION" >> $nRF5_SDK17/components/toolchain/gcc/Makefile.posix
+  - echo "GNU_PREFIX ?= arm-none-eabi" >> $nRF5_SDK17/components/toolchain/gcc/Makefile.posix
+
+
+build:
+  stage: build
+  script: 
+    - make
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/build/_build/**
