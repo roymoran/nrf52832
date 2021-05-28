@@ -34,7 +34,6 @@ e.g. `/Applications/SEGGER/JLink_V720a/JLinkGDBServerCLExe`
 
 ### Configure Makefile.posix or Makefile.windows
 Depending your OS, you must modify either Makefile.posix (Linux/macOS) or Makefile.windows found in the SDK directory (`${nRF5_SDK17}/components/toolchain/gcc/`).
-
 Contents of my Makefile.posix on my macOS.
 ```makefile
 GNU_INSTALL_ROOT ?= /Applications/ARM/bin/
@@ -42,8 +41,8 @@ GNU_VERSION ?= 10.2.1
 GNU_PREFIX ?= arm-none-eabi
 ```
 
-## Build and Flash
-To build source and flash the MCU you can use the VS Code tasks. Alternatively, run make from the command line.
+## Build and Flash Application Code + SoftDevice
+To build and flash the MCU you can use the VS Code tasks. Alternatively, run make from the command line.
 
 ```bash
 # see make commands available
@@ -52,11 +51,20 @@ $ make help
 $ make
 # flash program to nRF52832 DK
 $ make flash
+# flash softdevice to nRF52832 DK
+$ make flash_softdevice
 # erase program
 $ make erase
 # delete build output directory
 $ make clean
 ```
+
+SoftDevices are precompiled binaries in the form of hex files that contain the code that drive the BLE and/or ANT wireless protocol on the SoC. They are found in the SDK directory `${nRF5_SDK17}/components/softdevice/`. This template uses [S132](https://infocenter.nordicsemi.com/index.jsp?topic=/sds_s140/SDS/s1xx/s140.html). [More info](https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_gsg_ses%2FUG%2Fgsg%2Fsoftdevices.html) on SoftDevices and their compatibility with this and other nRF5 chips.
 ## Debug
 
-Connect your NRF52 DK over USB, set your breakpoints and hit F5.
+Connect your nRF52832 DK over USB, set your breakpoints and hit F5.
+
+Optionally use [Ozone](https://www.segger.com/products/development-tools/ozone-j-link-debugger/)
+
+## Different nRF52 DK
+To get this template to work for other nRF52 DKs you will have to manually replace all references to nRF52832. Including the linker files, Makefile, startup files, svd file, c_cpp_properties.json, and launch.json. The softdevice being flashed should also be updated to one that is compatible with your SoC.

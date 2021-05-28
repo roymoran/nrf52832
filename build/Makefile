@@ -7,6 +7,9 @@ OUTPUT_DIRECTORY := _build
 SDK_ROOT := ${nRF5_SDK17}
 PROJ_DIR := ../src
 PROJ_SDK_CONFIG := ../src/config/sdk_config.h
+SOFTDEVICE := s132
+SOFTDEVICE_DEFINE := S132
+SOFTDEVICE_PATH := ${nRF5_SDK17}/components/softdevice/${SOFTDEVICE}/hex/${SOFTDEVICE}_nrf52_7.2.0_softdevice.hex
 
 $(OUTPUT_DIRECTORY)/nrf52832_xxaa.out: \
   LINKER_SCRIPT  := generic_gcc_nrf52.ld
@@ -41,6 +44,9 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/libraries/memobj \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/components/libraries/log/src \
+  $(SDK_ROOT)/components/softdevice/common \
+  $(SDK_ROOT)/components/softdevice/${SOFTDEVICE}/headers/nrf52 \
+  $(SDK_ROOT)/components/softdevice/${SOFTDEVICE}/headers \
 
 # Libraries common to all targets
 LIB_FILES += \
@@ -59,6 +65,9 @@ CFLAGS += -DFLOAT_ABI_HARD
 CFLAGS += -DNRF52
 CFLAGS += -DNRF52832_XXAA
 CFLAGS += -DNRF52_PAN_74
+CFLAGS += -DNRF_SD_BLE_API_VERSION=7
+CFLAGS += -D${SOFTDEVICE_DEFINE}
+CFLAGS += -DSOFTDEVICE_PRESENT
 CFLAGS += -mcpu=cortex-m4
 CFLAGS += -mthumb -mabi=aapcs
 CFLAGS += -Wall -Werror
@@ -81,6 +90,9 @@ ASMFLAGS += -DFLOAT_ABI_HARD
 ASMFLAGS += -DNRF52
 ASMFLAGS += -DNRF52832_XXAA
 ASMFLAGS += -DNRF52_PAN_74
+ASMFLAGS += -DNRF_SD_BLE_API_VERSION=7
+ASMFLAGS += -D${SOFTDEVICE_DEFINE}
+ASMFLAGS += -DSOFTDEVICE_PRESENT
 
 # Linker flags
 LDFLAGS += $(OPT)
@@ -92,10 +104,14 @@ LDFLAGS += -Wl,--gc-sections
 # use newlib in nano version
 LDFLAGS += --specs=nano.specs
 
-nrf52832_xxaa: CFLAGS += -D__HEAP_SIZE=8192
+nrf52832_xxaa: CFLAGS += -D__HEAP_SIZE=0
 nrf52832_xxaa: CFLAGS += -D__STACK_SIZE=8192
-nrf52832_xxaa: ASMFLAGS += -D__HEAP_SIZE=8192
+nrf52832_xxaa: ASMFLAGS += -D__HEAP_SIZE=0
 nrf52832_xxaa: ASMFLAGS += -D__STACK_SIZE=8192
+
+# Add standard libraries at the very end of the linker input, after all objects
+# that may need symbols provided by these libraries.
+LIB_FILES += -lc -lnosys -lm
 
 .PHONY: default help
 
@@ -106,10 +122,11 @@ default: nrf52832_xxaa
 help:
 	@echo following targets are available:
 	@echo		nrf52832_xxaa
-	@echo		sdk_config - start external tool for editing sdk_config.h
-	@echo		flash      - flash binary
-	@echo		erase      - clear program flashed on board
-	@echo		clean      - delete build output directory
+	@echo		sdk_config        - start external tool for editing sdk_config.h
+	@echo		flash             - flash program binary
+	@echo		flash_softdevice  - flash softdevice ${SOFTDEVICE}
+	@echo		erase             - clear program flashed on board
+	@echo		clean             - delete build output directory
 
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 
@@ -117,12 +134,18 @@ include $(TEMPLATE_PATH)/Makefile.common
 
 $(foreach target, $(TARGETS), $(call define_target, $(target)))
 
-.PHONY: flash erase
+.PHONY: flash flash_softdevice erase
 
 # Flash the program
 flash: default
 	@echo Flashing: $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex
 	nrfjprog -f nrf52 --program $(OUTPUT_DIRECTORY)/nrf52832_xxaa.hex --sectorerase
+	nrfjprog -f nrf52 --reset
+
+# Flash softdevice
+flash_softdevice:
+	@echo Flashing: ${SOFTDEVICE}_nrf52_7.2.0_softdevice.hex
+	nrfjprog -f nrf52 --program $(SOFTDEVICE_PATH) --sectorerase
 	nrfjprog -f nrf52 --reset
 
 erase:

@@ -5,11 +5,8 @@ GROUP(-lgcc -lc -lnosys)
 
 MEMORY
 {
-  /* generic_gcc_nrf52.ld found in SDK specified
-  flash ORIGIN as 0x30000, but program failed to run
-  on nRF52832 DK. So set to 0x0. TODO: Revise why it failed */
-  FLASH (rx) : ORIGIN = 0x0, LENGTH = 0x50000
-  RAM (rwx) :  ORIGIN = 0x20002000, LENGTH = 0xe000
+  FLASH (rx) : ORIGIN = 0x26000, LENGTH = 0x5a000
+  RAM (rwx) :  ORIGIN = 0x20001db8, LENGTH = 0xe248
 }
 
 SECTIONS

@@ -1,7 +1,8 @@
 {
     "env": {
         "GNU_GCC": "/Applications/ARM",
-        "nRF5_SDK17": "/Users/roymoran/nordicsemi/sdk/nRF5_SDK_17.0.2_d674dde"
+        "nRF5_SDK17": "/Users/roymoran/nordicsemi/sdk/nRF5_SDK_17.0.2_d674dde",
+        "SOFTDEVICE_DEFINE": "S132"
     },
     "configurations": [
         {
@@ -21,7 +22,10 @@
                 "BOARD_PCA10040",
                 "CONFIG_GPIO_AS_PINRESET",
                 "INITIALIZE_USER_SECTIONS",
-                "FLOAT_ABI_HARD"
+                "FLOAT_ABI_HARD",
+                "SOFTDEVICE_PRESENT",
+                "${SOFTDEVICE_DEFINE}",
+                "NRF_SD_BLE_API_VERSION=7"
             ],
             "macFrameworkPath": [
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"

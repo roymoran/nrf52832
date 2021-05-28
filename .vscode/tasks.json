@@ -38,6 +38,15 @@
             "detail": "flash binary"
         },
         {
+            "label": "flash softdevice",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            },
+            "command": "make flash_softdevice",
+            "detail": "flash softdevice"
+        },
+        {
             "label": "erase",
             "type": "shell",
             "options": {
