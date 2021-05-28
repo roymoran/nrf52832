@@ -59,7 +59,7 @@ $ make erase
 $ make clean
 ```
 
-SoftDevices are precompiled binaries in the form of hex files that contain the code that drive the BLE and/or ANT wireless protocol on the SoC. They are found in the SDK directory `${nRF5_SDK17}/components/softdevice/`. This template uses [S132](https://infocenter.nordicsemi.com/index.jsp?topic=/sds_s140/SDS/s1xx/s140.html). [More info](https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_gsg_ses%2FUG%2Fgsg%2Fsoftdevices.html) on SoftDevices and their compatibility with this and other nRF5 chips.
+SoftDevices are precompiled binaries in the form of hex files that contain the code that drive the BLE and/or ANT wireless protocol on the SoC. They are found in the SDK directory `${nRF5_SDK17}/components/softdevice/`. This template uses [S132](https://infocenter.nordicsemi.com/topic/sds_s132/SDS/s1xx/s130.html). [More info](https://infocenter.nordicsemi.com/index.jsp?topic=%2Fug_gsg_ses%2FUG%2Fgsg%2Fsoftdevices.html) on SoftDevices and their compatibility with this and other nRF5 chips.
 ## Debug
 
 Connect your nRF52832 DK over USB, set your breakpoints and hit F5.
