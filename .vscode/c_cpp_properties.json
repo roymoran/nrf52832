@@ -10,7 +10,10 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${env:GNU_GCC}/arm-none-eabi/include",
-                "${env:nRF5_SDK17}/**",
+                "${env:nRF5_SDK17}/components/**",
+                "${env:nRF5_SDK17}/modules/**",
+                "${env:nRF5_SDK17}/integration/**",
+                "${env:nRF5_SDK17}/external/**",
                 "./src/**"
             ],
             "defines": [
