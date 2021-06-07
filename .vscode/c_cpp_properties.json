@@ -2,7 +2,8 @@
     "env": {
         "GNU_GCC": "/Applications/ARM",
         "nRF5_SDK17": "/Users/roymoran/nordicsemi/sdk/nRF5_SDK_17.0.2_d674dde",
-        "SOFTDEVICE_DEFINE": "S132"
+        "SOFTDEVICE_DEFINE": "S132",
+        "SOFTDEVICE_INCLUDE": "s132"
     },
     "configurations": [
         {
@@ -10,8 +11,15 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${env:GNU_GCC}/arm-none-eabi/include",
-                "${env:nRF5_SDK17}/components/**",
-                "${env:nRF5_SDK17}/modules/**",
+                "${env:nRF5_SDK17}/components/boards",
+                "${env:nRF5_SDK17}/components/libraries/**",
+                "${env:nRF5_SDK17}/components/toolchain/cmsis/include",
+                "${env:nRF5_SDK17}/components/softdevice/common",
+                "${env:nRF5_SDK17}/components/softdevice/${env:SOFTDEVICE_INCLUDE}/headers/**",
+                "${env:nRF5_SDK17}/modules/nrfx",
+                "${env:nRF5_SDK17}/modules/nrfx/drivers/include",
+                "${env:nRF5_SDK17}/modules/nrfx/hal",
+                "${env:nRF5_SDK17}/modules/nrfx/mdk",
                 "${env:nRF5_SDK17}/integration/**",
                 "${env:nRF5_SDK17}/external/**",
                 "./src/**"
@@ -20,7 +28,6 @@
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE",
-                "NRF52",
                 "NRF52832_XXAA",
                 "BOARD_PCA10040",
                 "CONFIG_GPIO_AS_PINRESET",
