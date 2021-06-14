@@ -35,7 +35,8 @@
                 "FLOAT_ABI_HARD",
                 "SOFTDEVICE_PRESENT",
                 "${SOFTDEVICE_DEFINE}",
-                "NRF_SD_BLE_API_VERSION=7"
+                "NRF_SD_BLE_API_VERSION=7",
+                "USE_APP_CONFIG"
             ],
             "macFrameworkPath": [
                 "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
