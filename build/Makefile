@@ -30,8 +30,8 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/memobj/nrf_memobj.c \
   $(SDK_ROOT)/components/libraries/ringbuf/nrf_ringbuf.c \
   $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
+  $(SDK_ROOT)/components/libraries/util/app_error_weak.c \
   $(SDK_ROOT)/components/libraries/util/app_error.c \
-  $(SDK_ROOT)/external/nrf_cc310/common/integration_test_plat_utils.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf.c \
   $(SDK_ROOT)/external/utf_converter/utf.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf_format.c \
@@ -62,7 +62,6 @@ INC_FOLDERS += \
   $(SDK_ROOT)/components/softdevice/common \
   $(SDK_ROOT)/components/softdevice/${SOFTDEVICE}/headers/nrf52 \
   $(SDK_ROOT)/components/softdevice/${SOFTDEVICE}/headers \
-  $(SDK_ROOT)/external/nrf_cc310/include \
   $(SDK_ROOT)/external/segger_rtt \
   $(SDK_ROOT)/external/fprintf \
   $(SDK_ROOT)/integration/nrfx \

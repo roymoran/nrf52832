@@ -21,11 +21,13 @@
                 "${env:nRF5_SDK17}/modules/nrfx/hal",
                 "${env:nRF5_SDK17}/modules/nrfx/mdk",
                 "${env:nRF5_SDK17}/integration/**",
-                "${env:nRF5_SDK17}/external/**",
+                "${env:nRF5_SDK17}/external/segger_rtt",
+                "${env:nRF5_SDK17}/external/fprintf",
                 "./src/**"
             ],
             "defines": [
                 "_DEBUG",
+                "DEBUG",
                 "UNICODE",
                 "_UNICODE",
                 "NRF52832_XXAA",
