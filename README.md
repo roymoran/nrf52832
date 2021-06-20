@@ -51,11 +51,11 @@ $ make help
 $ make
 # generate release build with full compiler optimization and DEBUG flag turned off
 $ make BUILD=release
-# flash DEBUG program to nRF52840 DK
+# flash DEBUG program to nRF52832 DK
 $ make flash
 # flash release program
 $ make BUILD=release flash
-# flash softdevice to nRF52840 DK
+# flash softdevice to nRF52832 DK
 $ make flash_softdevice
 # erase program
 $ make erase
