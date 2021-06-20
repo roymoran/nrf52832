@@ -5,13 +5,15 @@
     "version": "0.2.0",
     "env": {
         "GDB_SERVER": "/Applications/SEGGER/JLink_V720a/JLinkGDBServerCLExe",
+        "GNU_GCC": "/Applications/ARM",
+        "nRF5_SDK17": "/Users/roymoran/nordicsemi/sdk/nRF5_SDK_17.0.2_d674dde",
     },
     "configurations": [
         {
             "name": "Debug J-Link",
             "type": "cortex-debug",
             "request": "launch",
-            "executable": "${workspaceRoot}/build/_build/nrf52832_xxaa.out",
+            "executable": "${workspaceRoot}/build/_build/debug/nrf52832_xxaa.out",
             "armToolchainPath": "${env:GNU_GCC}/bin/",
             "servertype": "jlink",
             "serverpath": "${env:GDB_SERVER}",

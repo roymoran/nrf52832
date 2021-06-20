@@ -1,8 +1,14 @@
-65PROJECT_NAME     := nrf52832_template
+PROJECT_NAME     := nrf52832_template
 TARGETS          := nrf52832_xxaa
-# if output directory altered, must change
-# .gitlab-ci.yml build stage to upload
-OUTPUT_DIRECTORY := _build
+BUILD            := debug
+# override the MK variable declared in Makefile.common
+# to create parent directories recursively
+override MK := mkdir -p
+# if output directory changed from "_build", 
+# must change .gitlab-ci.yml build stage 
+# so build/release artifacts are uploaded 
+OUTPUT_DIRECTORY := _build/$(BUILD)
+
 
 SDK_ROOT := ${nRF5_SDK17}
 PROJ_DIR := ../src
@@ -32,6 +38,8 @@ SRC_FILES += \
   $(SDK_ROOT)/components/libraries/util/app_util_platform.c \
   $(SDK_ROOT)/components/libraries/util/app_error_weak.c \
   $(SDK_ROOT)/components/libraries/util/app_error.c \
+  $(SDK_ROOT)/components/libraries/util/app_error_handler_gcc.c \
+  $(SDK_ROOT)/components/libraries/strerror/nrf_strerror.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf.c \
   $(SDK_ROOT)/external/utf_converter/utf.c \
   $(SDK_ROOT)/external/fprintf/nrf_fprintf_format.c \
@@ -75,13 +83,7 @@ INC_FOLDERS += \
 # Libraries common to all targets
 LIB_FILES += \
 
-# Optimization flags
-OPT = -O3 -g3
-# Uncomment the line below to enable link time optimization
-#OPT += -flto
-
 # C flags common to all targets
-CFLAGS += $(OPT)
 CFLAGS += -DBOARD_PCA10040
 CFLAGS += -DBSP_DEFINES_ONLY
 CFLAGS += -DCONFIG_GPIO_AS_PINRESET
@@ -101,7 +103,7 @@ CFLAGS += -ffunction-sections -fdata-sections -fno-strict-aliasing
 CFLAGS += -fno-builtin -fshort-enums
 
 # C++ flags common to all targets
-CXXFLAGS += $(OPT)
+CXXFLAGS += \
 # Assembler flags common to all targets
 ASMFLAGS += -g3
 ASMFLAGS += -mcpu=cortex-m4
@@ -119,7 +121,6 @@ ASMFLAGS += -DSOFTDEVICE_PRESENT
 ASMFLAGS += -DUSE_APP_CONFIG
 
 # Linker flags
-LDFLAGS += $(OPT)
 LDFLAGS += -mthumb -mabi=aapcs -L$(SDK_ROOT)/modules/nrfx/mdk -T$(LINKER_SCRIPT)
 LDFLAGS += -mcpu=cortex-m4
 LDFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
@@ -127,6 +128,27 @@ LDFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 LDFLAGS += -Wl,--gc-sections
 # use newlib in nano version
 LDFLAGS += --specs=nano.specs
+
+# Release build optimization flags
+RELEASE_OPT = -O3 -g3
+# Debug build optimization flags
+DEBUG_OPT = -O0 -ggdb
+# Uncomment the line below to enable link time optimization
+#RELEASE_OPT += -flto
+	
+ifeq ($(BUILD), debug)
+  nrf52832_xxaa: CXXFLAGS += $(DEBUG_OPT)
+  nrf52832_xxaa: LDFLAGS += $(DEBUG_OPT)
+  nrf52832_xxaa: CFLAGS += $(DEBUG_OPT)
+  nrf52832_xxaa: CFLAGS += -DDEBUG
+  nrf52832_xxaa: ASMFLAGS += -DDEBUG
+  nrf52832_xxaa: ASMFLAGS += -ggdb
+else
+  nrf52832_xxaa: CXXFLAGS += $(RELEASE_OPT)
+  nrf52832_xxaa: LDFLAGS += $(RELEASE_OPT)
+  nrf52832_xxaa: CFLAGS += $(RELEASE_OPT)
+  nrf52832_xxaa: ASMFLAGS += -g3
+endif
 
 nrf52832_xxaa: CFLAGS += -D__HEAP_SIZE=0
 nrf52832_xxaa: CFLAGS += -D__STACK_SIZE=8192
@@ -145,12 +167,12 @@ default: nrf52832_xxaa
 # Print all targets that can be built
 help:
 	@echo following targets are available:
-	@echo		nrf52832_xxaa
-	@echo		sdk_config        - start external tool for editing sdk_config.h
-	@echo		flash             - flash program binary
-	@echo		flash_softdevice  - flash softdevice ${SOFTDEVICE}
-	@echo		erase             - clear program flashed on board
-	@echo		clean             - delete build output directory
+	@echo		make                      - build nrf52832_xxaa with DEBUG flag and no compiler optimizations, use make BUILD=release to create optimized build
+	@echo		sdk_config                - start external tool for editing sdk_config.h
+	@echo		flash                     - flash program binary, use flash BUILD=release to flash release build
+	@echo		flash_softdevice          - flash softdevice ${SOFTDEVICE}
+	@echo		erase                     - clear program flashed on board
+	@echo		clean                     - delete build output directory
 
 TEMPLATE_PATH := $(SDK_ROOT)/components/toolchain/gcc
 

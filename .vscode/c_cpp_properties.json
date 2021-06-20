@@ -20,7 +20,8 @@
                 "${env:nRF5_SDK17}/modules/nrfx/drivers/include",
                 "${env:nRF5_SDK17}/modules/nrfx/hal",
                 "${env:nRF5_SDK17}/modules/nrfx/mdk",
-                "${env:nRF5_SDK17}/integration/**",
+                "${env:nRF5_SDK17}/integration/nrfx",
+                "${env:nRF5_SDK17}/integration/nrfx/legacy",
                 "${env:nRF5_SDK17}/external/segger_rtt",
                 "${env:nRF5_SDK17}/external/fprintf",
                 "./src/**"

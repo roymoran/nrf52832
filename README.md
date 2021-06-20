@@ -47,11 +47,15 @@ To build and flash the MCU you can use the VS Code tasks. Alternatively, run mak
 ```bash
 # see make commands available
 $ make help
-# generate buld output
+# generate DEBUG build
 $ make
-# flash program to nRF52832 DK
+# generate release build with full compiler optimization and DEBUG flag turned off
+$ make BUILD=release
+# flash DEBUG program to nRF52840 DK
 $ make flash
-# flash softdevice to nRF52832 DK
+# flash release program
+$ make BUILD=release flash
+# flash softdevice to nRF52840 DK
 $ make flash_softdevice
 # erase program
 $ make erase
